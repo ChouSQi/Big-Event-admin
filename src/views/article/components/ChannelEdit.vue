@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { artEditChannelService, artAddChannelService } from '@/api/article.js'
+import { artEditChannelService, artAddChannelService } from '@/api/article'
 const dialogVisible = ref(false)
 const formRef = ref()
 const formModel = ref({
@@ -12,7 +12,7 @@ const rules = {
     { required: true, message: '请输入分类名称', trigger: 'blur' },
     {
       pattern: /^\S{1,10}$/,
-      message: '分类名必须是 1-10 位的非空字符',
+      message: '分类名必须是 1-10位 的非空字符',
       trigger: 'blur'
     }
   ],
@@ -20,7 +20,7 @@ const rules = {
     { required: true, message: '请输入分类别名', trigger: 'blur' },
     {
       pattern: /^[a-zA-Z0-9]{1,15}$/,
-      message: '分类名必须是 1-15 位的字母或数字',
+      message: '分类名必须是 1-10位 的字母或数字',
       trigger: 'blur'
     }
   ]
@@ -37,17 +37,16 @@ const onSubmit = async () => {
     await artAddChannelService(formModel.value)
     ElMessage.success('添加成功')
   }
+
   dialogVisible.value = false
   emit('success')
 }
 
-// 组件对外暴露一个方法 open，基于open传来的参数，区分添加还是编辑
-// open({})  => 表单无需渲染，说明是添加
-// open({ id, cate_name, ... })  => 表单需要渲染，说明是编辑
-// open调用后，可以打开弹窗
+// 组件对外暴露的一个方法 open, 基于open传来的参数，区分添加还是编辑
 const open = (row) => {
+  console.log(row)
   dialogVisible.value = true
-  formModel.value = { ...row } // 添加 → 重置了表单内容，编辑 → 存储了需要回显的数据
+  formModel.value = { ...row } // 添加内容进入输入框
 }
 
 // 向外暴露方法
@@ -60,7 +59,8 @@ defineExpose({
   <el-dialog
     v-model="dialogVisible"
     :title="formModel.id ? '编辑分类' : '添加分类'"
-    width="30%"
+    width="500"
+    :before-close="handleClose"
   >
     <el-form
       ref="formRef"
@@ -83,10 +83,10 @@ defineExpose({
       </el-form-item>
     </el-form>
     <template #footer>
-      <span class="dialog-footer">
+      <div class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="onSubmit"> 确认 </el-button>
-      </span>
+      </div>
     </template>
   </el-dialog>
 </template>

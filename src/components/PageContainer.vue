@@ -17,6 +17,7 @@ defineProps({
         </div>
       </div>
     </template>
+
     <slot></slot>
   </el-card>
 </template>

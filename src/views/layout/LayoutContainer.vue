@@ -15,7 +15,6 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const userStore = useUserStore()
 const router = useRouter()
-
 onMounted(() => {
   userStore.getUser()
 })
@@ -23,13 +22,12 @@ onMounted(() => {
 const handleCommand = async (key) => {
   if (key === 'logout') {
     // 退出操作
-    await ElMessageBox.confirm('你确认要进行退出么', '温馨提示', {
+    await ElMessageBox.confirm('您确认要退出吗', '温馨提示', {
       type: 'warning',
       confirmButtonText: '确认',
       cancelButtonText: '取消'
     })
-
-    // 清除本地的数据 (token + user信息)
+    // 清除本地的数据 (token和user的信息)
     userStore.removeToken()
     userStore.setUser({})
     router.push('/login')
@@ -41,14 +39,6 @@ const handleCommand = async (key) => {
 </script>
 
 <template>
-  <!-- 
-    el-menu 整个菜单组件
-      :default-active="$route.path"  配置默认高亮的菜单项
-      router  router选项开启，el-menu-item 的 index 就是点击跳转的路径
-
-    el-menu-item 菜单项
-      index="/article/channel" 配置的是访问的跳转路径，配合default-active的值，实现高亮
-  -->
   <el-container class="layout-container">
     <el-aside width="200px">
       <div class="el-aside__logo"></div>
@@ -59,6 +49,7 @@ const handleCommand = async (key) => {
         text-color="#fff"
         router
       >
+        <!-- 配置的是访问的跳转路径， 配合default-active的值，实现高亮 -->
         <el-menu-item index="/article/channel">
           <el-icon><Management /></el-icon>
           <span>文章分类</span>
@@ -75,7 +66,7 @@ const handleCommand = async (key) => {
             <span>个人中心</span>
           </template>
 
-          <!-- 展开的内容 - 默认插槽 -->
+          <!-- 展开的内容 -->
           <el-menu-item index="/user/profile">
             <el-icon><User /></el-icon>
             <span>基本资料</span>
@@ -99,13 +90,11 @@ const handleCommand = async (key) => {
           }}</strong>
         </div>
         <el-dropdown placement="bottom-end" @command="handleCommand">
-          <!-- 展示给用户，默认看到的 -->
+          <!-- 展示给用户，默认看得到 -->
           <span class="el-dropdown__box">
             <el-avatar :src="userStore.user.user_pic || avatar" />
             <el-icon><CaretBottom /></el-icon>
           </span>
-
-          <!-- 折叠的下拉部分 -->
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="profile" :icon="User"
@@ -127,7 +116,7 @@ const handleCommand = async (key) => {
       <el-main>
         <router-view></router-view>
       </el-main>
-      <el-footer>大事件 ©2023 Created by 黑马程序员</el-footer>
+      <el-footer>大事件 ©2026 Created by 黑马程序员</el-footer>
     </el-container>
   </el-container>
 </template>
